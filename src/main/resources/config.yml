@@ -1,0 +1,56 @@
+Farm:
+  worldName: 'world'
+  refreshInterval: 600
+  farmRegions:
+    - 'solfarm'
+    - 'sagsolfarm'
+    - 'sagortafarm'
+    - 'sagkosefarm1'
+    - 'sagkosefarm2'
+    - 'sagkosefarm3'
+    - 'sagkosefarm4'
+  cropTypes:
+    - 'CARROTS'
+    - 'POTATOES'
+    - 'WHEAT'
+    - 'POTATOES'
+    - 'POTATOES'
+    - 'POTATOES'
+    - 'BEETROOTS'
+
+Drops:
+  enabled: true
+
+  wheatChance: 75.0
+  wheatDropCommands:
+  - 'give %player% diamond 1'
+  - 'give %player% diamond_block 1'
+  wheatDropMessages:
+  - 'You have found a treasure while breaking &a&lwheat&r, with a chance of &b%chance_rate%%'
+  - '&a&lCongratz!'
+
+  carrotChance: 50.0
+  carrotDropCommands:
+  - 'give %player% emerald 1'
+  - 'give %player% emerald_block 1'
+  carrotDropMessages:
+  - 'You have found a treasure while breaking &a&lcarrot&r, with a chance of &b%chance_rate%%'
+  - '&a&lCongratz!'
+
+  potatoChance: 25.0
+  potatoDropCommands:
+  - 'give %player% redstone 1'
+  - 'give %player% redstone_block 1'
+  potatoDropMessages:
+  - 'You have found a treasure while breaking &a&lpotato&r, with a chance of &b%chance_rate%%'
+  - '&a&lCongratz!'
+
+  beetrootChance: 3.0
+  beetrootDropCommands:
+  - 'give %player% coal 1'
+  - 'give %player% coal_block 1'
+  beetrootDropMessages:
+  - 'You have found a treasure while breaking &a&lbeetroot&r, with a chance of &b%chance_rate%%'
+  - '&a&lCongratz!'
+
+

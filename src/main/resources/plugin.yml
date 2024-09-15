@@ -1,0 +1,9 @@
+name: CropsRegen
+version: '1.0'
+main: io.github.altkat.cropsRegen.CropsRegen
+api-version: '1.21'
+author: AltKat(StreetMelodeez)
+depend:
+  - WorldGuard
+softdepend:
+  - PlaceholderAPI
