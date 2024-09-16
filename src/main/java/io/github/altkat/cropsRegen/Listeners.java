@@ -75,37 +75,39 @@ public class Listeners implements Listener {
             return;
         }
 
-        CompletableFuture.runAsync(() -> {
-            BlockVector3 blockVector = BukkitAdapter.asBlockVector(block.getLocation());
-            ApplicableRegionSet regionSet = regions.getApplicableRegions(blockVector);
+        BlockVector3 blockVector = BukkitAdapter.asBlockVector(block.getLocation());
+        ApplicableRegionSet regionSet = regions.getApplicableRegions(blockVector);
 
-            if (!regionSet.getRegions().isEmpty()) {
-                for (ProtectedRegion region : regionSet) {
-                    if (regionNames.contains(region.getId())) {
-                        if (isCrop(block.getType()) && status) {
-                            double chance = random.nextDouble() * 100;
-                            double chanceRate = chanceRates.getOrDefault(block.getType(), 100.0);
-                            farmCommand = commands.get(block.getType());
-                            dropMessage = messages.get(block.getType());
+        if (regionSet.getRegions().isEmpty()) return;
 
-                            if (chance < chanceRate) {
-                                Bukkit.getScheduler().runTask(plugin, () -> {
+        boolean isCropBlock = isCrop(block.getType());
+        boolean hasPermission = player.hasPermission("*");
 
-                                    for (String s : farmCommand) {
-                                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("%player%", player.getName()));
-                                    }
-                                    for (String s : dropMessage) {
-                                        player.sendMessage(s.replace("%chance_rate%", String.valueOf(chanceRate)).replace("&", "§"));
-                                    }
-                                });
-                            }
-                        } else if (!player.hasPermission("*")) {
-                            Bukkit.getScheduler().runTask(plugin, () -> event.setCancelled(true));
-                        }
+        boolean shouldCancel = regionSet.getRegions().stream()
+                .anyMatch(region -> regionNames.contains(region.getId()) && !isCropBlock && !hasPermission);
+
+        if (shouldCancel) {
+            event.setCancelled(true);
+            return;
+        }
+
+        if (isCropBlock && status) {
+            double chance = random.nextDouble() * 100;
+            double chanceRate = chanceRates.getOrDefault(block.getType(), 100.0);
+            farmCommand = commands.get(block.getType());
+            dropMessage = messages.get(block.getType());
+
+            if (chance < chanceRate) {
+                Bukkit.getScheduler().runTask(plugin, () -> {
+                    for (String s : farmCommand) {
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("%player%", player.getName()));
                     }
-                }
+                    for (String s : dropMessage) {
+                        player.sendMessage(s.replace("%chance_rate%", String.valueOf(chanceRate)).replace("&", "§"));
+                    }
+                });
             }
-        });
+        }
     }
 
     private boolean isCrop(Material material) {
